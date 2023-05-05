@@ -1,5 +1,5 @@
 @extends('admin.admin_dashboard')
-@section('title', 'Category')
+@section('title', 'SubCategory')
 @section('css')
     <link href="{{ asset('adminbackend/assets/plugins/datatable/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
@@ -49,7 +49,8 @@
                                 <td>{{ $subcategory->category->category_name }}</td>
                                 <td>{{ $subcategory->subcategory_name }}</td>
                                 <td>
-                                    <a href="{{ route('edit.subcategory', $subcategory->id) }}" class="btn btn-info">Edit</a>
+                                    <a href="{{ route('edit.subcategory', $subcategory->id) }}"
+                                        class="btn btn-info">Edit</a>
                                     <a href="#" class="btn btn-danger delete-btn "
                                         data-id="{{ $subcategory->id }}">Delete</a>
                                 </td>
@@ -129,7 +130,8 @@
                                     $('tr[data-id="' + id + '"]').hide();
                                 },
                                 error: function(xhr) {
-                                    swal("Error!", "Failed to delete subcategory!", "error");
+                                    swal("Error!", "Failed to delete subcategory!",
+                                    "error");
                                 }
                             });
                         }

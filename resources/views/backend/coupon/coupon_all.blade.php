@@ -1,7 +1,13 @@
 @extends('admin.admin_dashboard')
 @section('title', 'Coupons')
 @section('css')
+    <link href="{{ asset('adminbackend/assets/plugins/datatable/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet" />
+
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection
 @section('admin')
     <div class="page-content">
@@ -42,8 +48,8 @@
                         </thead>
                         <tbody>
                             @foreach ($coupon as $key => $item)
-                                <tr>
-                                    <td> {{ $key + 1 }} </td>
+                            <tr data-id="{{ $item->id }}">
+                                <td> {{ $key + 1 }} </td>
                                     <td> {{ $item->coupon_name }}</td>
                                     <td> {{ $item->coupon_discount }} </td>
                                     <td> {{ Carbon\Carbon::parse($item->coupon_validity)->format('D, d F Y') }} </td>
@@ -59,9 +65,9 @@
                                     </td>
 
                                     <td>
-                                        <a href="{{ route('edit.subcategory', $item->id) }}" class="btn btn-info">Edit</a>
-                                        <a href="{{ route('delete.subcategory', $item->id) }}" class="btn btn-danger"
-                                            id="delete">Delete</a>
+                                        <a href="{{ route('edit.coupon', $item->id) }}" class="btn btn-info">Edit</a>
+                                        <a href="#" class="btn btn-danger delete-btn "
+                                            data-id="{{ $item->id }}">Delete</a>
 
                                     </td>
                                 </tr>
@@ -69,16 +75,7 @@
 
 
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>Sl</th>
-                                <th>Coupon Name </th>
-                                <th>Coupon Discount </th>
-                                <th>Coupon Validity </th>
-                                <th>Coupon Status </th>
-                                <th>Action</th>
-                            </tr>
-                        </tfoot>
+                      
                     </table>
                 </div>
             </div>
@@ -141,6 +138,43 @@
                                 },
                                 error: function(xhr) {
                                     swal("Error!", "Failed to delete category!", "error");
+                                }
+                            });
+                        }
+                    });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.delete-btn').click(function() {
+                var id = $(this).data('id');
+                swal({
+                        title: "Are you sure?",
+                        text: "Once deleted, you will not be able to recover this Subcategory!",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                url: '{{ route('delete.coupon', ':id') }}'.replace(':id',
+                                    id),
+                                type: 'DELETE',
+                                dataType: 'json',
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                },
+                                success: function(response) {
+                                    swal("Success!",
+                                        "subcategory has been deleted successfully!",
+                                        "success");
+                                    // hide the row from the table
+                                    $('tr[data-id="' + id + '"]').hide();
+                                },
+                                error: function(xhr) {
+                                    swal("Error!", "Failed to delete coupon!", "error");
                                 }
                             });
                         }
