@@ -1,5 +1,8 @@
 @extends('admin.admin_dashboard')
 @section('title', 'Coupons')
+@section('css')
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+@endsection
 @section('admin')
     <div class="page-content">
         <!--breadcrumb-->
@@ -84,4 +87,65 @@
 
 
     </div>
+@endsection
+
+@section('js')
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        @if (Session::has('message'))
+            var type = "{{ Session::get('alert-type', 'info') }}"
+            switch (type) {
+                case 'info':
+                    toastr.info(" {{ Session::get('message') }} ");
+                    break;
+                case 'success':
+                    toastr.success(" {{ Session::get('message') }} ");
+                    break;
+                case 'warning':
+                    toastr.warning(" {{ Session::get('message') }} ");
+                    break;
+                case 'error':
+                    toastr.error(" {{ Session::get('message') }} ");
+                    break;
+            }
+        @endif
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.delete-btn').click(function() {
+                var id = $(this).data('id');
+                swal({
+                        title: "Are you sure?",
+                        text: "Once deleted, you will not be able to recover this category!",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                url: '{{ route('delete.category', ':id') }}'.replace(':id',
+                                    id),
+                                type: 'DELETE',
+                                dataType: 'json',
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                },
+                                success: function(response) {
+                                    swal("Success!",
+                                        "category has been deleted successfully!",
+                                        "success");
+                                    // hide the row from the table
+                                    $('tr[data-id="' + id + '"]').hide();
+                                },
+                                error: function(xhr) {
+                                    swal("Error!", "Failed to delete category!", "error");
+                                }
+                            });
+                        }
+                    });
+            });
+        });
+    </script>
 @endsection

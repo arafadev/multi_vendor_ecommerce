@@ -1,7 +1,7 @@
 @extends('admin.admin_dashboard')
 @section('title', 'Add Coupon')
-
 @section('admin')
+
 
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -30,13 +30,12 @@
 
                             <form method="post" action="{{ route('store.coupon') }}">
                                 @csrf
-
                                 <div class="row mb-3">
                                     <div class="col-sm-3">
                                         <h6 class="mb-0">Coupon Name</h6>
                                     </div>
                                     <div class="form-group col-sm-9 text-secondary">
-                                        <input type="text" name="coupon_name" class="form-control" />
+                                        <input type="text" name="coupon_name" class="form-control" value="{{ old("coupon_name") }}" />
                                         <div style="color: red">
                                             @error('coupon_name')
                                                 {{ $message }}
@@ -50,7 +49,7 @@
                                         <h6 class="mb-0">Coupon Discount(%)</h6>
                                     </div>
                                     <div class="form-group col-sm-9 text-secondary">
-                                        <input type="text" name="coupon_discount" class="form-control" />
+                                        <input type="number" name="coupon_discount" class="form-control"  value="{{ old("coupon_discount") }}" />
                                         <div style="color: red">
                                             @error('coupon_discount')
                                                 {{ $message }}
@@ -64,8 +63,9 @@
                                         <h6 class="mb-0">Coupon Validity</h6>
                                     </div>
                                     <div class="form-group col-sm-9 text-secondary">
-                                        <input type="date" name="coupon_validity" class="form-control" min="{{ Carbon\Carbon::now()->format('Y-m-d') }}" />
-                                        <div style="color: red" >
+                                        <input type="date" name="coupon_validity" class="form-control" value="{{ old('coupon_validity') }}"
+                                            min="{{ Carbon\Carbon::now()->format('Y-m-d') }}" />
+                                        <div style="color: red">
                                             @error('coupon_validity')
                                                 {{ $message }}
                                             @enderror
