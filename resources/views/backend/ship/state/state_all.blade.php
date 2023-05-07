@@ -1,5 +1,5 @@
 @extends('admin.admin_dashboard')
-@section('title', 'Coupons')
+@section('title', 'All state')
 @section('css')
     <link href="{{ asset('adminbackend/assets/plugins/datatable/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet" />
 
@@ -10,22 +10,23 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection
 @section('admin')
+
     <div class="page-content">
         <!--breadcrumb-->
         <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-            <div class="breadcrumb-title pe-3">All Coupon </div>
+            <div class="breadcrumb-title pe-3">All State </div>
             <div class="ps-3">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">All Coupon</li>
+                        <li class="breadcrumb-item active" aria-current="page">All State</li>
                     </ol>
                 </nav>
             </div>
             <div class="ms-auto">
                 <div class="btn-group">
-                    <a href="{{ route('add.coupon') }}" class="btn btn-primary">Add Coupon</a>
+                    <a href="{{ route('add.state') }}" class="btn btn-primary">Add State</a>
                 </div>
             </div>
         </div>
@@ -39,35 +40,23 @@
                         <thead>
                             <tr>
                                 <th>Sl</th>
-                                <th>Coupon Name </th>
-                                <th>Coupon Discount </th>
-                                <th>Coupon Validity </th>
-                                <th>Coupon Status </th>
+                                <th>Division Name </th>
+                                <th>District Name </th>
+                                <th>State Name </th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($coupon as $key => $item)
-                            <tr data-id="{{ $item->id }}">
-                                <td> {{ $key + 1 }} </td>
-                                    <td> {{ $item->coupon_name }}</td>
-                                    <td> {{ $item->coupon_discount }}% </td>
-                                    <td> {{ Carbon\Carbon::parse($item->coupon_validity)->format('D, d F Y') }} </td>
-
-
+                            @foreach ($state as $key => $item)
+                                <tr data-id="{{ $item->id }}">
+                                    <td> {{ $key + 1 }} </td>
+                                    <td> {{ $item->division->division_name }}</td>
+                                    <td> {{ $item->district->district_name }}</td>
+                                    <td> {{ $item->state_name }}</td>
                                     <td>
-                                        @if ($item->coupon_validity >= Carbon\Carbon::now()->format('Y-m-d'))
-                                            <span class="badge rounded-pill bg-success">Valid</span>
-                                        @else
-                                            <span class="badge rounded-pill bg-danger">Invalid</span>
-                                        @endif
-
-                                    </td>
-
-                                    <td>
-                                        <a href="{{ route('edit.coupon', $item->id) }}" class="btn btn-info">Edit</a>
+                                        <a href="{{ route('edit.state', $item->id) }}" class="btn btn-info">Edit</a>
                                         <a href="#" class="btn btn-danger delete-btn "
-                                            data-id="{{ $item->id }}">Delete</a>
+                                        data-id="{{ $item->id }}">Delete</a>
 
                                     </td>
                                 </tr>
@@ -75,7 +64,15 @@
 
 
                         </tbody>
-
+                        <tfoot>
+                            <tr>
+                                <th>Sl</th>
+                                <th>Division Name </th>
+                                <th>District Name </th>
+                                <th>State Name </th>
+                                <th>Action</th>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -84,8 +81,11 @@
 
 
     </div>
-@endsection
 
+
+
+
+@endsection
 @section('js')
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
@@ -115,7 +115,7 @@
                 var id = $(this).data('id');
                 swal({
                         title: "Are you sure?",
-                        text: "Once deleted, you will not be able to recover this Coupon!",
+                        text: "Once deleted, you will not be able to recover this State!",
                         icon: "warning",
                         buttons: true,
                         dangerMode: true,
@@ -123,7 +123,7 @@
                     .then((willDelete) => {
                         if (willDelete) {
                             $.ajax({
-                                url: '{{ route('delete.coupon', ':id') }}'.replace(':id',
+                                url: '{{ route('delete.state', ':id') }}'.replace(':id',
                                     id),
                                 type: 'DELETE',
                                 dataType: 'json',
@@ -132,13 +132,13 @@
                                 },
                                 success: function(response) {
                                     swal("Success!",
-                                        "Coupon has been deleted successfully!",
+                                        "subcategory has been deleted successfully!",
                                         "success");
                                     // hide the row from the table
                                     $('tr[data-id="' + id + '"]').hide();
                                 },
                                 error: function(xhr) {
-                                    swal("Error!", "Failed to delete coupon!", "error");
+                                    swal("Error!", "Failed to delete state!", "error");
                                 }
                             });
                         }

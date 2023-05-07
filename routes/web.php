@@ -17,6 +17,7 @@ use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\SubCategoryController;
+use App\Http\Controllers\Backend\ShippingAreaController;
 use App\Http\Controllers\Backend\VendorProductController;
 
 /*
@@ -212,6 +213,47 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/edit/coupon/{id}', 'EditCoupon')->name('edit.coupon');
         Route::post('/update/coupon', 'UpdateCoupon')->name('update.coupon');
         Route::delete('/delete/coupon/{id}', 'DeleteCoupon')->name('delete.coupon');
+    });
+
+    // Shipping Division All Route
+    Route::controller(ShippingAreaController::class)->group(function () {
+        Route::get('/all/division', 'AllDivision')->name('all.division');
+        Route::get('/add/division', 'AddDivision')->name('add.division');
+        Route::post('/store/division', 'StoreDivision')->name('store.division');
+        Route::get('/edit/division/{id}', 'EditDivision')->name('edit.division');
+        Route::post('/update/division/{id}', 'UpdateDivision')->name('update.division');
+        Route::delete('/delete/division/{id}', 'DeleteDivision')->name('delete.division');
+    });
+
+    // Shipping District All Route
+    Route::controller(ShippingAreaController::class)->group(function () {
+        Route::get('/all/district', 'AllDistrict')->name('all.district');
+        Route::get('/add/district', 'AddDistrict')->name('add.district');
+        Route::post('/store/district', 'StoreDistrict')->name('store.district');
+        Route::get('/edit/district/{id}', 'EditDistrict')->name('edit.district');
+        Route::post('/update/district/{id}', 'UpdateDistrict')->name('update.district');
+        Route::delete('/delete/district/{id}', 'DeleteDistrict')->name('delete.district');
+    });
+
+    // Shipping District All Route
+    Route::controller(ShippingAreaController::class)->group(function () {
+        Route::get('/all/district', 'AllDistrict')->name('all.district');
+        Route::get('/add/district', 'AddDistrict')->name('add.district');
+        Route::post('/store/district', 'StoreDistrict')->name('store.district');
+        Route::get('/edit/district/{id}', 'EditDistrict')->name('edit.district');
+        Route::post('/update/district/{id}', 'UpdateDistrict')->name('update.district');
+        Route::delete('/delete/district/{id}', 'DeleteDistrict')->name('delete.district');
+    });
+    // Shipping State All Route
+    Route::controller(ShippingAreaController::class)->group(function () {
+        Route::get('/all/state', 'Allstate')->name('all.state');
+        Route::get('/add/state', 'addState')->name('add.state');
+        Route::post('/store/state', 'stoteState')->name('store.state');
+        Route::get('/edit/state/{id}', 'editState')->name('edit.state');
+        Route::post('/update/state/{id}', 'updateState')->name('update.state');
+        Route::delete('/delete/state/{id}', 'deleteState')->name('delete.state');
+
+        Route::get('/district/ajax/{division_id}', 'GetDistrict');
     });
 });
 

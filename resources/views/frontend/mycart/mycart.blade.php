@@ -59,7 +59,7 @@
                             <form action="#">
                                 <div class="d-flex justify-content-between">
                                     <input class="font-medium mr-15 coupon" name="Coupon" placeholder="Enter Your Coupon">
-                                    <button class="btn"><i class="fi-rs-label mr-10"></i>Apply</button>
+                                    <a class="btn btn-success" type="submit"><i class="fi-rs-label mr-10"></i>Apply</a>
                                 </div>
                             </form>
                         </div>
