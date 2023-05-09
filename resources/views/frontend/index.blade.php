@@ -1,5 +1,8 @@
 @extends('frontend.master_dashboard')
 @section('title', 'Home')
+@section('css')
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+@endsection
 @section('main')
     @include('frontend.home.home_slider')
 
@@ -66,7 +69,7 @@
                                         @php
                                             $amount = $product->selling_price - $product->discount_price;
                                             $discount = ($amount / $product->selling_price) * 100;
-
+                                            
                                         @endphp
 
 
@@ -194,7 +197,7 @@
                                         @php
                                             $amount = $product->selling_price - $product->discount_price;
                                             $discount = ($amount / $product->selling_price) * 100;
-
+                                            
                                         @endphp
 
 
@@ -328,7 +331,7 @@
                                         @php
                                             $amount = $product->selling_price - $product->discount_price;
                                             $discount = ($amount / $product->selling_price) * 100;
-
+                                            
                                         @endphp
 
 
@@ -604,4 +607,27 @@
     @include('frontend.home.home_vendor_list')
 
     <!--End Vendor List -->
+@endsection
+@section('js')
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        @if (Session::has('message'))
+            var type = "{{ Session::get('alert-type', 'info') }}"
+            switch (type) {
+                case 'info':
+                    toastr.info(" {{ Session::get('message') }} ");
+                    break;
+                case 'success':
+                    toastr.success(" {{ Session::get('message') }} ");
+                    break;
+                case 'warning':
+                    toastr.warning(" {{ Session::get('message') }} ");
+                    break;
+                case 'error':
+                    toastr.error(" {{ Session::get('message') }} ");
+                    break;
+            }
+        @endif
+    </script>
 @endsection

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use Carbon\Carbon;
 use App\Models\Coupon;
 use App\Models\Product;
+use App\Models\ShipDivision;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
@@ -132,7 +133,7 @@ class CartController extends Controller
         if (Session::has('coupon')) {
             $coupon_name = Session::get('coupon')['coupon_name'];
             $coupon = Coupon::where('coupon_name', $coupon_name)->first();
-            
+
             Session::put('coupon', [
                 'coupon_name' => $coupon->coupon_name,
                 'coupon_discount' => $coupon->coupon_discount,
@@ -195,4 +196,29 @@ class CartController extends Controller
         Session::forget('coupon');
         return response()->json(['success' => 'Coupon Remove Successfully']);
     } // End Method
+
+
+
+    public function CheckoutCreate()
+    {
+
+
+        if (Cart::total() > 0) {
+
+            $carts = Cart::content();
+            $cartQty = Cart::count();
+            $cartTotal = Cart::total();
+
+            $divisions = ShipDivision::orderBy('division_name', 'ASC')->get();
+            return view('frontend.checkout.checkout_view', compact('carts', 'cartQty', 'cartTotal', 'divisions'));
+        } else {
+
+            $notification = array(
+                'message' => 'Shopping At list One Product',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->to('/')->with($notification);
+        }
+    }
 }

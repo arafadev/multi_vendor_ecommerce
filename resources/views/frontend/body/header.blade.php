@@ -1,6 +1,4 @@
 <!-- Header  -->
-
-
 @php
     $categories = App\Models\Category::orderBy('category_name', 'ASC')->get();
     $firstCategories = $categories->take(5);
@@ -122,7 +120,8 @@
 
                             <div class="header-action-icon-2">
                                 <a href="{{ route('compare') }}">
-                                    <img class="svgInject" alt="Nest" src="{{ asset('frontend/assets/imgs/theme/icons/icon-compare.svg')}}" />
+                                    <img class="svgInject" alt="Nest"
+                                        src="{{ asset('frontend/assets/imgs/theme/icons/icon-compare.svg') }}" />
                                 </a>
                                 <a href="{{ route('compare') }}"><span class="lable ml-0">Compare</span></a>
                             </div>
@@ -138,10 +137,10 @@
                                 <a class="mini-cart-icon" href="{{ route('mycart') }}">
                                     <img alt="Nest"
                                         src="{{ asset('frontend/assets/imgs/theme/icons/icon-cart.svg') }}" />
-                                        <span class="pro-count blue" id="cartQty"> </span>
-                                    </a>
-                                    <a href="{{ route('mycart') }}"><span class="lable">Cart</span></a>
-                                    <div class="cart-dropdown-wrap cart-dropdown-hm2">
+                                    <span class="pro-count blue" id="cartQty">0</span>
+                                </a>
+                                <a href="{{ route('mycart') }}"><span class="lable">Cart</span></a>
+                                <div class="cart-dropdown-wrap cart-dropdown-hm2">
                                     <!--   // mini cart start with ajax -->
                                     <div id="miniCart">
 
