@@ -6,7 +6,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-6 col-sm-12 col-xs-12 mb-md-0 mb-sm-5">
-                    <div class="detail-gallery">
+                        <div class="detail-gallery">
 
                             <!-- MAIN SLIDES -->
                             <img src=" " alt="product image" id="pimage" />
@@ -68,6 +68,8 @@
                                             <li class="mb-5">Brand: <span class="text-brand" id="pbrand"> </span>
                                             </li>
                                             <li class="mb-5">Category:<span class="text-brand" id="pcategory"> </span>
+                                            </li>
+                                            <li class="mb-5">Vendor:<span class="text-brand" id="pvendor_id"> </span>
                                             </li>
                                         </ul>
                                     </div>

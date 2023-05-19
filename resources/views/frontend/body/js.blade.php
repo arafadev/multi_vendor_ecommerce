@@ -38,7 +38,7 @@
              url: '/product/view/modal/' + id,
              dataType: 'json',
              success: function(data) {
-                 // console.log(data)
+                 //  console.log(data)
                  $('#pname').text(data.product.product_name);
                  $('#pprice').text(data.product.selling_price);
                  $('#pcode').text(data.product.product_code);
@@ -47,7 +47,7 @@
                  $('#pimage').attr('src', '/' + data.product.product_thambnail);
                  $('#product_id').val(id);
                  $('#qty').val(1);
-
+                 $('#pvendor_id').text(data.product.vendor_id);
                  // Product Price
                  if (data.product.discount_price == null) {
                      $('#pprice').text('');
@@ -101,6 +101,7 @@
          var color = $('#color option:selected').text();
          var size = $('#size option:selected').text();
          var quantity = $('#qty').val();
+         var vendor = $('#pvendor_id').text();
          $.ajax({
              type: "POST",
              dataType: 'json',
@@ -108,7 +109,9 @@
                  color: color,
                  size: size,
                  quantity: quantity,
-                 product_name: product_name
+                 product_name: product_name,
+                 vendor: vendor
+
              },
              url: "/cart/data/store/" + id,
              success: function(data) {
@@ -220,6 +223,7 @@
          var id = $('#dproduct_id').val();
          var color = $('#dcolor option:selected').text();
          var size = $('#dsize option:selected').text();
+         var vendor = $('#vproduct_id').val();
          var quantity = $('#dqty').val();
          $.ajax({
              type: "POST",
@@ -228,13 +232,17 @@
                  color: color,
                  size: size,
                  quantity: quantity,
-                 product_name: product_name
+                 color: color,
+                 size: size,
+                 quantity: quantity,
+                 product_name: product_name,
+                 vendor: vendor
+
              },
              url: "/dcart/data/store/" + id,
              success: function(data) {
                  miniCart();
-
-                 // console.log(data)
+                 //  console.log(data)
                  // Start Message
                  const Toast = Swal.mixin({
                      toast: true,
@@ -264,7 +272,6 @@
      /// Start Wishlist Add -->
 
      /// Start Wishlist Add -->
-
      function addToWishList(product_id) {
          $.ajax({
              type: "POST",
@@ -590,7 +597,9 @@
              }
          })
      }
+
      cart();
+
      // Cart Remove Start
      function cartRemove(id) {
          $.ajax({
@@ -636,7 +645,7 @@
              url: "/cart-decrement/" + rowId,
              dataType: 'json',
              success: function(data) {
-                couponCalculation();
+                 couponCalculation();
                  cart();
                  miniCart();
              }
@@ -651,7 +660,7 @@
              url: "/cart-increment/" + rowId,
              dataType: 'json',
              success: function(data) {
-                couponCalculation();
+                 couponCalculation();
                  cart();
                  miniCart();
              }
@@ -675,7 +684,6 @@
                  couponCalculation();
                  if (data.validity == true) {
                      $('#couponField').hide();
-
                  }
                  // Start Message
                  const Toast = Swal.mixin({
@@ -748,7 +756,7 @@
                         <h6 class="text-muted">Coupon </h6>
                     </td>
                     <td class="cart_total_amount">
-                        <h6 class="text-brand text-end">${data.coupon_name} <a type="submit" onclick="couponRemove()"><i class="fi-rs-trash"></i> </a> </h6> 
+                        <h6 class="text-brand text-end">${data.coupon_name} <a type="submit" onclick="couponRemove()"><i class="fi-rs-trash"></i> </a> </h6>
                     </td>
                 </tr>
                 <tr>

@@ -113,9 +113,6 @@
                                                 <span class="old-price">${{ $product->selling_price }}</span>
                                             </div>
                                         @endif
-
-
-
                                         <div class="add-cart">
                                             <a class="add" href="shop-cart.html"><i
                                                     class="fi-rs-shopping-cart mr-5"></i>Add </a>
@@ -126,19 +123,12 @@
                         </div>
                         <!--end product card-->
                     @endforeach
-
-
-
-
                 </div>
                 <!--End product-grid-4-->
             </div>
             <!--En tab one-->
-
-
-
             @foreach ($categories as $category)
-                <div class="tab-pane fade" id="category{{ $category->id }}" role="tabpanel" aria-labelledby="tab-two">
+                <div class="tab-pane fade" id="category{{ $category->id }}" role="tabpanel" >
                     <div class="row product-grid-4">
 
                         @php
@@ -239,13 +229,8 @@
                             <!--end product card-->
 
                         @empty
-
                             <h5 class="text-danger"> No Product Found </h5>
                         @endforelse
-
-
-
-
                     </div>
                     <!--End product-grid-4-->
                 </div>

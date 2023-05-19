@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\User\StripeController;
 use App\Http\Controllers\User\CompareController;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\Backend\BrandController;
@@ -44,13 +45,10 @@ Route::get('/vendor/all', [IndexController::class, 'VendorAll'])->name('vendor.a
 Route::get('/product/category/{id}/{slug}', [IndexController::class, 'catWithProducts']);
 Route::get('/product/subcategory/{id}/{slug}', [IndexController::class, 'SubCatWiseProduct']);
 Route::get('/product/view/modal/{id}', [IndexController::class, 'ProductViewAjax']);
-Route::get('/product/view/modal/{id}', [IndexController::class, 'ProductViewAjax']);
 /// Add to cart store data
 Route::post('/cart/data/store/{id}', [CartController::class, 'AddToCart']);
 // Get Data from mini Cart
 Route::get('/product/mini/cart', [CartController::class, 'AddMiniCart']);
-Route::get('/product/mini/cart', [CartController::class, 'AddMiniCart']);
-Route::get('/minicart/product/remove/{rowId}', [CartController::class, 'RemoveMiniCart']);
 Route::get('/minicart/product/remove/{rowId}', [CartController::class, 'RemoveMiniCart']);
 /// Add to cart store data For Product Details Page
 Route::post('/dcart/data/store/{id}', [CartController::class, 'AddToCartDetails']);
@@ -94,16 +92,20 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 
         // Checkout Page Route
         Route::get('/checkout', [CartController::class, 'CheckoutCreate'])->name('checkout');
-
-
-        // Checkout All Route
-        Route::controller(CheckoutController::class)->group(function () {
-            Route::get('/district-get/ajax/{division_id}', 'DistrictGetAjax');
-            Route::get('/state-get/ajax/{district_id}', 'StateGetAjax');
-            Route::post('/checkout/store' , 'CheckoutStore')->name('checkout.store');
-
-        });
     });
+
+    // Checkout All Route
+    Route::controller(CheckoutController::class)->group(function () {
+        Route::get('/district-get/ajax/{division_id}', 'DistrictGetAjax');
+        Route::get('/state-get/ajax/{district_id}', 'StateGetAjax');
+        Route::post('/checkout/store', 'CheckoutStore')->name('checkout.store');
+    });
+
+    // Stripe All Route
+    Route::controller(StripeController::class)->group(function () {
+        Route::post('/stripe/order', 'StripeOrder')->name('stripe.order');
+    });
+    
 }); // end group middleware
 
 

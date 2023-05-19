@@ -15,6 +15,9 @@ class CartController extends Controller
 {
     public function addToCart(Request $request, $id)
     {
+        if (Session::has('coupon')) {
+            Session::forget('coupon');
+        }
         $product = Product::findOrFail($id);
 
         // Determine the price based on whether or not the product is on sale
@@ -31,6 +34,7 @@ class CartController extends Controller
                 'image' => $product->product_thambnail,
                 'color' => $request->color,
                 'size' => $request->size,
+                'vendor' => $request->vendor,
             ],
         ]);
 
@@ -38,6 +42,9 @@ class CartController extends Controller
     }
     public function AddToCartDetails(Request $request, $id)
     {
+        if (Session::has('coupon')) {
+            Session::forget('coupon');
+        }
         $product = Product::findOrFail($id);
 
         // Determine the price based on whether or not the product is on sale
@@ -54,6 +61,8 @@ class CartController extends Controller
                 'image' => $product->product_thambnail,
                 'color' => $request->color,
                 'size' => $request->size,
+                'vendor_id' => $request->vendor_id,
+
             ],
         ]);
 
@@ -71,20 +80,21 @@ class CartController extends Controller
             'carts' => $carts,
             'cartQty' => $cartQty,
             'cartTotal' => $cartTotal
-
         ));
-    } // End Method
+    }
+
+
     public function RemoveMiniCart($rowId)
     {
         Cart::remove($rowId);
         return response()->json(['success' => 'Product Remove From Cart']);
-    } // End Method
+    }
 
     public function MyCart()
     {
 
         return view('frontend.mycart.mycart');
-    } // End Method
+    }
     public function GetCartProduct()
     {
 
@@ -98,13 +108,25 @@ class CartController extends Controller
             'cartTotal' => $cartTotal
 
         ));
-    } // End Method
+    }
 
     public function CartRemove($rowId)
     {
         Cart::remove($rowId);
+
+        if (Session::has('coupon')) {
+            $coupon_name = Session::get('coupon')['coupon_name'];
+            $coupon = Coupon::where('coupon_name', $coupon_name)->first();
+
+            Session::put('coupon', [
+                'coupon_name' => $coupon->coupon_name,
+                'coupon_discount' => $coupon->coupon_discount,
+                'discount_amount' => round(Cart::total() * $coupon->coupon_discount / 100),
+                'total_amount' => round(Cart::total() - Cart::total() * $coupon->coupon_discount / 100)
+            ]);
+        }
         return response()->json(['success' => 'Successfully Remove From Cart']);
-    } // End Method
+    }
     public function CartDecrement($rowId)
     {
 
@@ -126,7 +148,7 @@ class CartController extends Controller
         Cart::update($rowId, $row->qty - 1);
 
         return response()->json('Decrement');
-    } // End Method
+    }
     public function CartIncrement($rowId)
     {
         // this condition for coupon section and this function can work without condition.
@@ -145,7 +167,7 @@ class CartController extends Controller
         Cart::update($rowId, $row->qty + 1);
 
         return response()->json('Increment');
-    } // End Method
+    }
 
     public function CouponApply(Request $request)
     {
@@ -188,14 +210,14 @@ class CartController extends Controller
                 'total' => Cart::total(),
             ));
         }
-    } // End Method
+    }
 
     public function CouponRemove()
     {
 
         Session::forget('coupon');
         return response()->json(['success' => 'Coupon Remove Successfully']);
-    } // End Method
+    }
 
 
 

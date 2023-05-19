@@ -30,11 +30,17 @@
 
                         <div class="row">
                             <div class="form-group col-lg-6">
-                                <input type="text" required="" placeholder="Name" name="shipping_name" value="{{ Auth::user()->name }}">
+                                <input type="text" required="" placeholder="Name" name="shipping_name"
+                                    value="{{ Auth::user()->name }}">
                             </div>
                             <div class="form-group col-lg-6">
                                 <input type="email" required="" name="shipping_email"
                                     value="{{ Auth::user()->email }}">
+                                <div style="color: red">
+                                    @error('shipping_email')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
                             </div>
                         </div>
 
@@ -50,11 +56,21 @@
                                         @endforeach
 
                                     </select>
+                                    <div style="color: red">
+                                        @error('division_id')
+                                            {{ $message }}
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group col-lg-6">
                                 <input required="" type="text" name="shipping_phone"
                                     value="{{ Auth::user()->phone }}">
+                                <div style="color: red">
+                                    @error('shipping_phone')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
                             </div>
                         </div>
 
@@ -66,11 +82,21 @@
 
 
                                     </select>
+                                    <div style="color: red">
+                                        @error('district_id')
+                                            {{ $message }}
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group col-lg-6">
 
                                 <input required="" type="text" name="post_code" placeholder="Post Code *">
+                                <div style="color: red">
+                                    @error('post_code')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
                             </div>
                         </div>
 
@@ -82,29 +108,33 @@
 
 
                                     </select>
+                                    <div style="color: red">
+                                        @error('state_id')
+                                            {{ $message }}
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group col-lg-6">
                                 <input required="" type="text" name="shipping_address" placeholder="Address *"
                                     value="{{ Auth::user()->address }}">
+                                <div style="color: red">
+                                    @error('shipping_address')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
                             </div>
                         </div>
-
-
-
-
-
                         <div class="form-group mb-30">
                             <textarea rows="5" placeholder="Additional information" name="notes"></textarea>
+                            <div style="color: red">
+                                @error('notes')
+                                    {{ $message }}
+                                @enderror
+                            </div>
                         </div>
-
-
-
-
                 </div>
             </div>
-
-
             <div class="col-lg-5">
                 <div class="border p-40 cart-totals ml-30 mb-50">
                     <div class="d-flex align-items-end justify-content-between mb-30">
@@ -139,10 +169,6 @@
                                 @endforeach
                             </tbody>
                         </table>
-
-
-
-
                         <table class="table no-border">
                             <tbody>
 
@@ -181,7 +207,8 @@
                                             <h6 class="text-muted">Grand Total</h6>
                                         </td>
                                         <td class="cart_total_amount">
-                                            <h4 class="text-brand text-end">${{ session()->get('coupon')['total_amount'] }}
+                                            <h4 class="text-brand text-end">
+                                                ${{ session()->get('coupon')['total_amount'] }}
                                             </h4>
                                         </td>
                                     </tr>
@@ -265,7 +292,7 @@
                         type: "GET",
                         dataType: "json",
                         success: function(data) {
-                            $('select[name="district_id"]').html('');
+                            $('select[name="state_id"]').html('');
                             var d = $('select[name="district_id"]').empty();
                             $.each(data, function(key, value) {
                                 $('select[name="district_id"]').append(
@@ -297,7 +324,7 @@
                             $.each(data, function(key, value) {
                                 $('select[name="state_id"]').append('<option value="' +
                                     value.id + '">' + value.state_name + '</option>'
-                                    );
+                                );
                             });
                         },
 
